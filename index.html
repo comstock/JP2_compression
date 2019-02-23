@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Harvard-Yenching Library JP2 compression analysis</title>
+
+<script src="HYL_JP2_analysis_files/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="HYL_JP2_analysis_files/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="HYL_JP2_analysis_files/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="HYL_JP2_analysis_files/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="HYL_JP2_analysis_files/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="HYL_JP2_analysis_files/navigation-1.1/tabsets.js"></script>
+<link href="HYL_JP2_analysis_files/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="HYL_JP2_analysis_files/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Harvard-Yenching Library JP2 compression analysis</h1>
+
+</div>
+
+
+<div id="lossy-compressed-files" class="section level3">
+<h3>Lossy compressed files</h3>
+<ul>
+<li>Total number of lossy-compressed JP2 <strong>files</strong> analyzed: <strong>3,818,553</strong></li>
+<li>DRS annual storage fees for <strong>uncompressed TIFF equivalent</strong> files: <strong>$147,333</strong> per year.</li>
+<li>DRS annual storage fees for <strong>lossy compressed</strong> files: <strong>$15,663.40</strong> per year.</li>
+<li>Overall realized <strong>compression ratio: 9.4:1</strong>
+<ul>
+<li><strong>Mean, compression ratio,</strong> lossy compressed set: <strong>11.2:1</strong> (0.1 extremities trimmed)</li>
+</ul></li>
+<li>Annual storage cost <strong>savings</strong> realized through file compression: <strong>$131,669</strong> per year</li>
+<li>Number of files compressed more than 30 times: <strong>168</strong>, 0.0044%.</li>
+</ul>
+</div>
+<div id="files-ids-with-lowest-compression-ratios" class="section level3">
+<h3>25 files (ids) with <strong>lowest compression ratios</strong>:</h3>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+th, td {
+  padding: 5px;
+  text-align: center;
+}
+th {
+  text-align: center;
+}
+</style>
+<table>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/10222268?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/10222268?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=10222268" target="_blank">10222268</a><br /> Ratio: 1.8:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/10827412?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/10827412?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=10827412" target="_blank">10827412</a><br /> Ratio: 1.8:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11671230?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11671230?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11671230" target="_blank">11671230</a><br /> Ratio: 1.9:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11671234?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11671234?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11671234" target="_blank">11671234</a><br /> Ratio: 1.9:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11671235?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11671235?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11671235" target="_blank">11671235</a><br /> Ratio: 1.9:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11671231?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11671231?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11671231" target="_blank">11671231</a><br /> Ratio: 1.9:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11671232?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11671232?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11671232" target="_blank">11671232</a><br /> Ratio: 1.9:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11671233?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11671233?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11671233" target="_blank">11671233</a><br /> Ratio: 1.9:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11391594?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11391594?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11391594" target="_blank">11391594</a><br /> Ratio: 2:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11215640?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11215640?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11215640" target="_blank">11215640</a><br /> Ratio: 2:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/14761626?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/14761626?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=14761626" target="_blank">14761626</a><br /> Ratio: 2:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/14810317?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/14810317?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=14810317" target="_blank">14810317</a><br /> Ratio: 2:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/14794436?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/14794436?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=14794436" target="_blank">14794436</a><br /> Ratio: 2:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/10856514?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/10856514?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=10856514" target="_blank">10856514</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11255411?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11255411?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11255411" target="_blank">11255411</a><br /> Ratio: 2.1:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11255493?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11255493?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11255493" target="_blank">11255493</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11506618?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11506618?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11506618" target="_blank">11506618</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11506619?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11506619?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11506619" target="_blank">11506619</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11506524?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11506524?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11506524" target="_blank">11506524</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11671229?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11671229?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11671229" target="_blank">11671229</a><br /> Ratio: 2.1:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11506898?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11506898?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11506898" target="_blank">11506898</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11506989?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11506989?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11506989" target="_blank">11506989</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11506990?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11506990?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11506990" target="_blank">11506990</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11507075?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11507075?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11507075" target="_blank">11507075</a><br /> Ratio: 2.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/11507723?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/11507723?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=11507723" target="_blank">11507723</a><br /> Ratio: 2.1:1 <br />
+</td>
+</tr>
+</table>
+</div>
+<div id="files-ids-with-highest-compression-ratios" class="section level3">
+<h3>25 files (ids) with <strong>highest compression ratios</strong>:</h3>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+th, td {
+  padding: 5px;
+  text-align: center;
+}
+th {
+  text-align: center;
+}
+</style>
+<table>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770065?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770065?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770065" target="_blank">50770065</a><br /> Ratio: 45.1:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770208?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770208?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770208" target="_blank">50770208</a><br /> Ratio: 44.3:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50780938?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50780938?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50780938" target="_blank">50780938</a><br /> Ratio: 42.8:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770106?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770106?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770106" target="_blank">50770106</a><br /> Ratio: 42.4:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770160?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770160?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770160" target="_blank">50770160</a><br /> Ratio: 42:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770159?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770159?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770159" target="_blank">50770159</a><br /> Ratio: 41.5:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/15484142?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/15484142?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=15484142" target="_blank">15484142</a><br /> Ratio: 41.4:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/46530595?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/46530595?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=46530595" target="_blank">46530595</a><br /> Ratio: 41.4:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/46609543?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/46609543?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=46609543" target="_blank">46609543</a><br /> Ratio: 41.4:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770016?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770016?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770016" target="_blank">50770016</a><br /> Ratio: 41.1:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/15484198?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/15484198?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=15484198" target="_blank">15484198</a><br /> Ratio: 40.6:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770158?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770158?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770158" target="_blank">50770158</a><br /> Ratio: 40.5:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770102?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770102?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770102" target="_blank">50770102</a><br /> Ratio: 39.9:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770207?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770207?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770207" target="_blank">50770207</a><br /> Ratio: 39.6:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770061?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770061?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770061" target="_blank">50770061</a><br /> Ratio: 39.1:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770204?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770204?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770204" target="_blank">50770204</a><br /> Ratio: 39:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/15484143?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/15484143?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=15484143" target="_blank">15484143</a><br /> Ratio: 38.5:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770154?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770154?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770154" target="_blank">50770154</a><br /> Ratio: 38.2:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/46609545?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/46609545?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=46609545" target="_blank">46609545</a><br /> Ratio: 38:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/47093095?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/47093095?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=47093095" target="_blank">47093095</a><br /> Ratio: 38:1 <br />
+</td>
+</tr>
+<tr>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/46553514?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/46553514?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=46553514" target="_blank">46553514</a><br /> Ratio: 37.9:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/46759421?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/46759421?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=46759421" target="_blank">46759421</a><br /> Ratio: 37.6:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770203?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770203?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770203" target="_blank">50770203</a><br /> Ratio: 37.5:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770239?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770239?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770239" target="_blank">50770239</a><br /> Ratio: 37.5:1 <br />
+</td>
+<td>
+<a href="http://ids.lib.harvard.edu/ids/view/50770060?buttons=y" target="_blank"><img src="http://ids.lib.harvard.edu/ids/view/50770060?width=100" /><br /><a href="https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId=50770060" target="_blank">50770060</a><br /> Ratio: 37.3:1 <br />
+</td>
+</tr>
+</table>
+</p>
+<p>
+<pre><code>## Warning: Removed 366 rows containing non-finite values (stat_bin).</code></pre>
+<p><img src="HYL_JP2_analysis_files/figure-html/CompressionDistributionHistogram-1.png" /><!-- --></p>
+<div id="dataset-information" class="section level4">
+<h4>Dataset information</h4>
+<ul>
+<li>Report ran against DRS-new on: <strong>04/02/2017</strong></li>
+<li>Storage cost: <strong>$1.25</strong> / GB / year</li>
+<li>total number of records in set: <strong>3,908,449</strong></li>
+<li>Mime/Type: <strong>image/jp2</strong></li>
+<li>DRS file insertion date range: <strong>08/22/2007</strong> <em>to</em> <strong>03/30/2017</strong></li>
+<li>Producer: ****</li>
+<li>MIX bits per sample value: <strong>8</strong></li>
+<li>MIX samples per pixel value: <strong>3</strong></li>
+</ul>
+</div>
+<div id="fields-in-set" class="section level4">
+<h4>Fields in set:</h4>
+<pre><code>## file_id_num
+## object_huldrsadmin_ownerCode_string_sort
+## object_huldrsadmin_billingCode_string
+## file_premis_format_string
+## file_mets_mimetype_string
+## file_huldrsadmin_insertionDate_date
+## file_huldrsadmin_role_string_sort
+## object_mets_type_string
+## object_huldrsadmin_producerWSID_string_sort
+## object_huldrsadmin_producer_string_sort
+## file_mix_bitsPerSampleValue_num_sort
+## file_mix_compressionScheme_string
+## file_mix_iccProfile_string
+## file_mix_imageHeight_num
+## file_mix_imageWidth_num
+## file_mix_samplesPerPixel_num
+## file_mix_samplingFrequencyUnit_string
+## file_mix_xSamplingFrequency_num
+## file_mix_ySamplingFrequency_num
+## file_premis_size_num
+## uncompressedBytes
+## CompressionRatio</code></pre>
+</div>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,420 @@
+---
+title: "Harvard-Yenching Library JP2 compression analysis"
+
+output:
+  html_document:
+    keep_md: yes
+    self_contained: no
+---
+
+```{r ONE, message=FALSE, warning=TRUE, include=FALSE}
+
+Install_And_Load <- function(Required_Packages)
+{
+  Remaining_Packages <-
+    Required_Packages[!(Required_Packages %in% installed.packages()[, "Package"])]
+  
+  if (length(Remaining_Packages))
+  {
+    install.packages(Remaining_Packages)
+    
+  }
+  for (package_name in Required_Packages)
+  {
+    library(package_name,
+            character.only = TRUE,
+            quietly = TRUE)
+  }
+}
+
+# Specify the list of required packages to be installed and load    
+Required_Packages=c("xts",
+                    "dygraphs",
+                    "knitr",
+                    "DescTools",
+                    "ggplot2",
+                    "scales",
+                    "RColorBrewer",
+                    "tm",
+                    "SnowballC",
+                    "wordcloud",
+                    "plyr");
+
+# Call the Function
+Install_And_Load(Required_Packages);
+
+color.scheme.choice <- brewer.pal(3,"Blues")
+
+
+##############################
+## Debug DATA path and file ##
+##############################
+# Debug dataPath Mac <- "/Users/comstock/Dropbox/work/R/data/"
+# dataPath <- "/Users/comstock/Dropbox/work/R/data/"
+# dataPath <- "C:/Users/comstock/Dropbox/work/R/data/"
+# dataFile <- paste(dataPath,"test_DRS_JP2_bitspersample-8_samplesperpixel-3_ImagingServices_20170109.csv", sep="")
+dataPath <- "C:/TEST/"
+dataFile <- paste(dataPath,"HYL_PDS_JP2_20170402.csv", sep="") # 4Million files
+# dataFile <- paste(dataPath,"xaa", sep="") # split -l 50000 HYL_PDS_JP2_20170402.csv
+##############################
+
+###################################
+## Production DATA path and file ##
+###################################
+# dataPath <- "R:\\R\\DRS\\data\\"
+# dataFile <- paste(dataPath,"sshot_drs2_jp2_after2013_ImagingServices_8bps_3spp_20170103.csv",sep="")
+###################################
+# dataPath <- "R:\\R\\DRS\\data\\"
+# dataFile <- paste(dataPath,"DRS_JP2_bitspersample-8_samplesperpixel-3_ImagingServices_20170104.csv",sep="")
+###################################
+# dataPath <- "/Volumes/digilab/Admin/USERS/comstock/docs/Rstudio/R/DRS/data/"
+# dataPath <- "R:\\R\\DRS\\data\\"
+# dataFile <- paste(dataPath,"DRS_JP2_bitspersample-8_samplesperpixel-3_ImagingServices_20170109.csv",sep="")
+# dataFile <- paste(dataPath,"HYL_PDS_JP2_20170402.csv",sep="")
+# dataPath <- "R:/R/DRS/data/"
+# dataFile <- paste(dataPath,"HYL_JP2_24bps_20170320.csv",sep="")
+###################################
+
+dataset.creation.date <- format.Date(file.mtime(dataFile),"%m/%d/%Y") # date datafile created via file system
+
+#######################
+###### FUNCTIONS ######
+#######################
+
+## uncompressedFileSize ##
+#  Using image pixel width, height, number of MixSamplesPerPixel, bits per sample, and number of records parsed.
+#  Not sure why I need to divide by the total number of records.
+#  Returns uncompressed image size in bytes.
+uncompressedFileSize <- function(imageHeight,imageWidth,bitsPerChannel,numChannels,totalFiles){
+  bitsperbyte <- 8
+  bits <- ((imageHeight * imageWidth) * (bitsPerChannel * numChannels))/totalFiles
+  bytes <- bits/bitsperbyte
+  # prettyNum(Bytes, big.mark = ",")
+  # kbytes <- bytes/1024
+  # mbytes <- kbytes/1024
+  # gbytes <- mbytes/1024
+  # tbytes <- gbytes/1024
+  # pbytes <- tbytes/1024
+  return(bytes)
+}
+
+## imageCompression ##
+#  Returns realized compression ratio
+imageCompression <- function(ActualSizeBytes,UncompressedEquivSizeBytes){
+  compression.ratio <- (UncompressedEquivSizeBytes/ActualSizeBytes)
+  compression.ratio <- (round(compression.ratio,digits = 1))
+  # compression.ratio <- sprintf("%g:1",compression.ratio)
+  return(compression.ratio)
+}
+
+## drs.annual.cost ##
+#  Returns DRS annual stoarge cost
+drs.annual.cost <- function(sizeGB,drs.cost.rate){
+  annual.cost <- sizeGB*drs.cost.rate
+  # annual.cost <- print.default(paste0("$", formatC(as.numeric(annual.cost), format="f", digits=2, big.mark=",")))
+  return(annual.cost)
+}
+
+## fancyNum ##
+# Returns string version of number with comma seperating thousands
+# and two digits after the decimal.
+fancyNum <- function(number){
+  fancyNumber <- prettyNum(round(number,digits=2),big.mark = ",")
+  return(fancyNumber)
+}
+
+img.table <- function(df.drs.id, df.drs.id.ratio, number.cols) {
+  
+  # df.drs.id <- lossySet[order(lossySet$CompressionRatio),][1:MaxMinRecords,1]
+  # df.drs.id.ratio <- lossySet[order(lossySet$CompressionRatio),][1:MaxMinRecords,7]
+  
+  ##########
+  ## VARS ##
+  ##########
+  drs.start <- "<a href=\"https://drs2.lib.harvard.edu:9400/drs2_webadmin/file?fileId="
+  drs.end <- "</a>"
+  tbl.td.start <- "<td>"
+  tbl.td.end <- "</td>"
+  img.link.start <- "<a href=\"http://ids.lib.harvard.edu/ids/view/"
+  img.link.end <- "?buttons=y\" target=\"_blank\">"
+  img.string.start <- "<img src=\"http://ids.lib.harvard.edu/ids/view/"
+  img.string.end <- "?width=100\" />"
+  
+  ############
+  ## stings ##
+  ############
+
+  td.line <- paste(
+    tbl.td.start,
+    img.link.start,
+    df.drs.id,
+    img.link.end,
+    img.string.start,
+    df.drs.id,
+    img.string.end,
+    "<br />",
+    drs.start,
+    df.drs.id,
+    "\" target=\"_blank\">",
+    df.drs.id,
+    drs.end,
+    "<br /> Ratio: ",
+    df.drs.id.ratio,
+    ":1 <br />",
+    tbl.td.end,
+    sep = ""
+  )
+  
+  ############
+  ## output ##
+  ############
+  
+  return(td.line)
+  
+  # outfile <- td.line ; write.table(outfile, file = "c:/temp/td_line.csv", sep = "\n",row.names = FALSE,col.names = FALSE)
+  
+}
+
+########################
+
+# load data and create dataframe
+imageData <-
+  read.table(
+    dataFile,
+    header = TRUE,
+    sep = ","
+  )
+d.imageData <- data.frame(imageData)
+
+```
+
+```{r Variables, message=TRUE, warning=TRUE, include=FALSE}
+
+##########################
+## Setting dataset vars ##
+##########################
+
+MaxMinRecords <- 25 # Number of max and min ratio records to display
+tbl.columns <- 5
+TrimExtremes <- 0.10 # Extreme range of data to ignore when calculating means
+DRSannualCostRate <- 1.25
+ratio.too.compressed <- 30
+
+tbl.rows.modulo <- MaxMinRecords %% tbl.columns
+if(tbl.rows.modulo > 0){
+  tbl.rows <- trunc(MaxMinRecords / tbl.columns, digits = 0) + 1
+} else {tbl.rows <- trunc(MaxMinRecords / tbl.columns, digits = 0)}
+
+
+tbl.start <- "<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+  }
+th, td {
+  padding: 5px;
+  text-align: center;
+}
+th {
+  text-align: center;
+}
+</style>
+
+<table>"
+
+tbl.end <- "</table>"
+tbl.tr.start <- "<tr>"
+tbl.tr.end <- "</tr>"
+
+######
+
+if(length(unique(d.imageData$file_mets_mimetype_string)) > 1){
+  fileFormat <- "More than one mime type in set."
+} else { fileFormat <- unique(d.imageData$file_mets_mimetype_string)}
+
+ProducerValue <- unique(d.imageData$file_huldrsadmin_producer_string_sort)
+
+if(length(unique(d.imageData$file_mix_bitsPerSampleValue_num_sort)) > 1){
+  MixBitsPerSample <- "More than one bits per sample value in set."
+} else { MixBitsPerSample <- unique(d.imageData$file_mix_bitsPerSampleValue_num_sort)}
+
+if(length(unique(d.imageData$file_mix_samplesPerPixel_num)) > 1){
+  MixSamplesPerPixel <- "More than one samples per pixel value in set."
+} else { MixSamplesPerPixel <- unique(d.imageData$file_mix_samplesPerPixel_num)}
+
+earliestDRSinsertion <- unique(format.Date(d.imageData$file_huldrsadmin_insertionDate_date,"%m/%d/%Y"))[1]
+lastDRSinsertion <- length(unique(format.Date(d.imageData$file_huldrsadmin_insertionDate_date,"%m/%d/%Y")))
+lastDRSinsertion <- unique(format.Date(d.imageData$file_huldrsadmin_insertionDate_date,"%m/%d/%Y"))[lastDRSinsertion]
+
+################################################
+### add and populate CompressionRatio column ###
+################################################
+
+d.imageData["uncompressedBytes"] <- NA
+
+d.imageData$uncompressedBytes <- uncompressedFileSize(
+  d.imageData$file_mix_imageHeight_num,
+  d.imageData$file_mix_imageWidth_num,
+  d.imageData$file_mix_bitsPerSampleValue_num_sort,
+  d.imageData$file_mix_samplesPerPixel_num,
+  1)
+
+d.imageData["CompressionRatio"]<- NA
+
+d.imageData$CompressionRatio <- imageCompression(
+  d.imageData$file_premis_size_num,
+  d.imageData$uncompressedBytes)
+
+```
+
+```{r Lossy, echo=FALSE, message=TRUE, warning=TRUE}
+
+########################
+###### Lossy Set #######
+########################
+lossySet <- subset(d.imageData,file_mix_compressionScheme_string == "JPEG 2000 Lossy",c(file_id_num,file_huldrsadmin_insertionDate_date,file_mix_imageHeight_num,file_mix_imageWidth_num,file_premis_size_num,object_mets_type_string,CompressionRatio))
+
+lossy.actual.filesize.bytes <- sum(as.numeric(lossySet$file_premis_size_num))
+lossy.total.records <- nrow(lossySet)
+sumHeightLossy <- sum(as.numeric(lossySet$file_mix_imageHeight_num),na.rm=TRUE)
+sumWidthLossy <- sum(as.numeric(lossySet$file_mix_imageWidth_num),na.rm=TRUE)
+
+lossy.uncompressed.equiv.filesize.bytes <- uncompressedFileSize(sumHeightLossy,sumWidthLossy,MixBitsPerSample,MixSamplesPerPixel,lossy.total.records)
+
+lossy.uncompressed.equiv.drs.cost <- drs.annual.cost((lossy.uncompressed.equiv.filesize.bytes/1024/1024/1024),DRSannualCostRate)
+# lossy.uncompressed.equiv.drs.cost
+fancy.lossy.uncompressed.equiv.drs.cost <- fancyNum(lossy.uncompressed.equiv.drs.cost)
+
+
+lossy.compression.ratio <- imageCompression(lossy.actual.filesize.bytes,lossy.uncompressed.equiv.filesize.bytes)
+
+lossy.compressed.actual.drs.cost <- drs.annual.cost((lossy.actual.filesize.bytes/1024/1024/1024),DRSannualCostRate)
+
+lossy.compression.savings <- lossy.uncompressed.equiv.drs.cost - lossy.compressed.actual.drs.cost
+
+lossy.too.compressed <- subset(d.imageData,CompressionRatio > ratio.too.compressed,c(file_id_num,file_huldrsadmin_insertionDate_date,file_mix_imageHeight_num,file_mix_imageWidth_num,file_premis_size_num,object_mets_type_string,CompressionRatio))
+
+lossy.too.compressed.count <- nrow(lossy.too.compressed)
+
+max.lossy.drs.id <- lossySet[order(-lossySet$CompressionRatio),][1:MaxMinRecords,1]
+max.lossy.drs.id.ratio <- lossySet[order(-lossySet$CompressionRatio),][1:MaxMinRecords,7]
+
+min.lossy.drs.id <- lossySet[order(lossySet$CompressionRatio),][1:MaxMinRecords,1]
+min.lossy.drs.id.ratio <- lossySet[order(lossySet$CompressionRatio),][1:MaxMinRecords,7]
+
+```
+
+
+### Lossy compressed files
+
+* Total number of lossy-compressed JP2 **files** analyzed: **`r fancyNum(lossy.total.records)`**
+* DRS annual storage fees for **uncompressed TIFF equivalent** files: **`r dollar_format()(lossy.uncompressed.equiv.drs.cost)`** per year.
+* DRS annual storage fees for **lossy compressed** files: **`r dollar_format()(lossy.compressed.actual.drs.cost)`** per year.
+* Overall realized **compression ratio: `r lossy.compression.ratio`:1**
+    * **Mean, compression ratio,** lossy compressed set: **`r round(mean(lossySet$CompressionRatio,na.rm=TRUE, trim = TrimExtremes), digits=1)`:1** (`r TrimExtremes` extremities trimmed)
+* Annual storage cost **savings** realized through file compression: **`r dollar_format()(lossy.compression.savings)`** per year
+* Number of files compressed more than `r ratio.too.compressed` times: **`r fancyNum(lossy.too.compressed.count)`**, `r percent(lossy.too.compressed.count/lossy.total.records)`.
+
+### `r MaxMinRecords` files (ids) with **lowest compression ratios**:
+
+```{r LowestCompressionImageTable, echo=FALSE, message=TRUE, warning=TRUE, results="asis"}
+
+cat(tbl.start)
+i <- 1
+i.col <- tbl.columns
+i.tbl.rows <- tbl.rows
+while (i.tbl.rows > 0) {
+  while (i < MaxMinRecords) {
+    cat(tbl.tr.start)
+    i.col <- tbl.columns
+    while (i.col > 0) {
+      if (i > MaxMinRecords) {
+        break()
+      } else {
+        drs.id <- min.lossy.drs.id[i]
+        drs.id.ratio <- min.lossy.drs.id.ratio[i]
+        td.line.output <-
+          img.table(drs.id, drs.id.ratio, tbl.columns)
+        cat(td.line.output)
+        i.col <- i.col - 1
+        i <- i + 1
+      }
+      
+    }
+    cat(tbl.tr.end)
+  }
+  i.tbl.rows <- i.tbl.rows - 1
+}
+cat(tbl.end)
+
+
+```
+
+### `r MaxMinRecords` files (ids) with **highest compression ratios**:
+
+```{r HighestCompressionImageTable, echo=FALSE, message=TRUE, warning=TRUE, results="asis"}
+
+cat(tbl.start)
+i <- 1
+i.col <- tbl.columns
+i.tbl.rows <- tbl.rows
+while (i.tbl.rows > 0) {
+  while (i < MaxMinRecords) {
+    cat(tbl.tr.start)
+    i.col <- tbl.columns
+    while (i.col > 0) {
+      if (i > MaxMinRecords) {
+        break()
+      } else {
+        drs.id <- max.lossy.drs.id[i]
+        drs.id.ratio <- max.lossy.drs.id.ratio[i]
+        td.line.output <-
+          img.table(drs.id, drs.id.ratio, tbl.columns)
+        cat(td.line.output)
+        i.col <- i.col - 1
+        i <- i + 1
+      }
+      
+    }
+    cat(tbl.tr.end)
+  }
+  i.tbl.rows <- i.tbl.rows - 1
+}
+cat(tbl.end)
+
+```
+</p>
+<p>
+
+```{r CompressionDistributionHistogram, echo=FALSE, message=TRUE, warning=TRUE}
+
+qplot(lossySet$CompressionRatio,
+      geom="histogram",
+      binwidth = 2,  
+      main = "Lossy JP2 compression ratio distribution", 
+      xlab = "Compression ratios",
+      ylab = "File count",
+      fill=I("blue"), 
+      col=I("red"), 
+      alpha=I(.2),
+      xlim=c(1,30))
+```
+
+#### Dataset information
+
+* Report ran against DRS-new on: **`r dataset.creation.date`**
+* Storage cost: **$`r DRSannualCostRate`** / GB / year
+* total number of records in set: **`r fancyNum(nrow(d.imageData))`**
+* Mime/Type: **`r fileFormat`**
+* DRS file insertion date range: **`r earliestDRSinsertion`** _to_ **`r lastDRSinsertion`**
+* Producer: **`r ProducerValue`**
+* MIX bits per sample value: **`r MixBitsPerSample`**
+* MIX samples per pixel value: **`r MixSamplesPerPixel`**
+
+#### Fields in set:
+
+```{r DatasetFieldListing, echo=FALSE, message=TRUE, warning=TRUE}
+
+cat(colnames(d.imageData),sep = "\n")
+
+```
